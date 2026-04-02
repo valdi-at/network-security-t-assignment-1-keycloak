@@ -1,0 +1,39 @@
+services:
+  postgres:
+    networks:
+      - yggdrasil
+
+  keycloak:
+    entrypoint: /bin/sh
+    command: -c "/opt/keycloak/bin/kc.sh build && /opt/keycloak/bin/kc.sh start --optimized"
+    environment:
+      KC_PROXY: ${KC_PROXY}
+    ports: []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.opensmh-keycloak-iam.rule=Host(`auth.keycloak.opensmh.shinyshoe.net`)"
+      - "traefik.http.routers.opensmh-keycloak-iam.entrypoints=websecure"
+      - "traefik.http.routers.opensmh-keycloak-iam.service=opensmh-keycloak-iam"
+      - "traefik.http.routers.opensmh-keycloak-iam.tls=true"
+      - "traefik.http.routers.opensmh-keycloak-iam.tls.certresolver=letsencrypt"
+      - "traefik.http.services.opensmh-keycloak-iam.loadbalancer.server.port=8080"
+    networks:
+      - yggdrasil
+
+  app:
+    ports: []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.opensmh-keycloak-app.rule=Host(`keycloak.opensmh.shinyshoe.net`)"
+      - "traefik.http.routers.opensmh-keycloak-app.entrypoints=websecure"
+      - "traefik.http.routers.opensmh-keycloak-app.service=opensmh-keycloak-app"
+      - "traefik.http.routers.opensmh-keycloak-app.tls=true"
+      - "traefik.http.routers.opensmh-keycloak-app.tls.certresolver=letsencrypt"
+      - "traefik.http.services.opensmh-keycloak-app.loadbalancer.server.port=3000"
+    networks:
+      - yggdrasil
+
+networks:
+  yggdrasil:
+    name: yggdrasil-heimdall
+    external: true
