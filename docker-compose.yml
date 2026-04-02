@@ -29,7 +29,12 @@ services:
 
       KC_HEALTH_ENABLED: ${KC_HEALTH_ENABLED}
       KC_METRICS_ENABLED: ${KC_METRICS_ENABLED}
+
+      KC_HOSTNAME: ${KC_HOSTNAME}
       KC_HOSTNAME_STRICT: ${KC_HOSTNAME_STRICT}
+      KC_HOSTNAME_STRICT_HTTPS: ${KC_HOSTNAME_STRICT_HTTPS}
+      KC_HTTP_ENABLED: ${KC_HTTP_ENABLED}
+      KC_PROXY_HEADERS: ${KC_PROXY_HEADERS}
     restart: unless-stopped
   app:
     image: ghcr.io/valdi-at/network-security-t-assignment-1-app:master
