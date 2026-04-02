@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: Trigger Portainer Stack Rebuild Webhook
         run: |
-          curl -X POST "${{ secrets.PORTAINER_WEBHOOK }}"
+          curl --fail --show-error --silent -X POST "${{ secrets.PORTAINER_WEBHOOK }}"
