@@ -6,9 +6,7 @@ services:
   keycloak:
     entrypoint: /bin/sh
     command: -c "/opt/keycloak/bin/kc.sh build && /opt/keycloak/bin/kc.sh start --optimized"
-    environment:
-      KC_PROXY: ${KC_PROXY}
-    ports: []
+    ports: !reset []
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.opensmh-keycloak-iam.rule=Host(`auth.keycloak.opensmh.shinyshoe.net`)"
@@ -21,7 +19,7 @@ services:
       - yggdrasil
 
   app:
-    ports: []
+    ports: !reset []
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.opensmh-keycloak-app.rule=Host(`keycloak.opensmh.shinyshoe.net`)"
